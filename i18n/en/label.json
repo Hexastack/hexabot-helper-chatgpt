@@ -1,0 +1,22 @@
+{
+  "token": "API Token",
+  "model": "Model",
+  "frequency_penalty": "Frequency Penalty",
+  "function_call": "Function Call",
+  "logit_bias": "Logit Bias",
+  "logprobs": "Log Probabilities",
+  "max_completion_tokens": "Max Completion Tokens",
+  "n": "Number of Choices",
+  "parallel_tool_calls": "Parallel Tool Calls",
+  "presence_penalty": "Presence Penalty",
+  "response_format": "Response Format",
+  "seed": "Seed",
+  "stop": "Stop",
+  "store": "Store Output",
+  "stream": "Stream Output",
+  "temperature": "Temperature",
+  "tool_choice": "Tool Choice",
+  "top_logprobs": "Top Log Probabilities",
+  "top_p": "Top P",
+  "user": "End User ID"
+}
