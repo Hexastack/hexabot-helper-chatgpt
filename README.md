@@ -17,7 +17,9 @@ The **Hexabot ChatGPT Helper Extension** is a utility class designed to facilita
 To use the ChatGPT Helper Extension within Hexabot, follow these steps:
 
 ```
-npm install hexabot-helper-chatgpt --prefix ./api
+cd ~/projects/my-chatbot
+npm install hexabot-helper-chatgpt
+hexabot dev
 ```
 
 Make sure you have the appropriate access credentials for the ChatGPT API.

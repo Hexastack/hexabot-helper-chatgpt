@@ -2,6 +2,9 @@
   "name": "hexabot-helper-chatgpt",
   "version": "2.0.0",
   "description": "The OpenAI ChatGPT Helper Extension for Hexabot Chatbot / Agent Builder to enable the LLM Capability",
+  "scripts": {
+    "release": "npm version patch && git push origin --tags && npm publish"
+  },
   "dependencies": {
     "openai": "^4.54.0"
   },
