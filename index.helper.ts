@@ -138,7 +138,7 @@ export default class ChatGptLlmHelper
     model: string,
     systemPrompt: string,
     schema: LLM.ResponseSchema,
-    options: Omit<ChatCompletionCreateParamsBase, 'messages' | 'model'>,
+    options: ChatGptOptions,
   ): Promise<T> {
     const { model: globalModel } = await this.getSettings();
     // Merge options: argument options take precedence over global settings
@@ -150,6 +150,8 @@ export default class ChatGptLlmHelper
         { role: 'user', content: prompt },
       ],
       ...opts,
+      // Force temperature to zero to be deterministic
+      temperature: 0,
       stream: false,
       response_format: {
         json_schema: {
