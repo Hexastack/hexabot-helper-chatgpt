@@ -8,17 +8,23 @@
 
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
+import OpenAI from 'openai';
+import { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions';
 
 import { AnyMessage } from '@/chat/schemas/types/message';
 import { HelperService } from '@/helper/helper.service';
 import BaseLlmHelper from '@/helper/lib/base-llm-helper';
+import { LLM } from '@/helper/types';
 import { LoggerService } from '@/logger/logger.service';
 import { Setting } from '@/setting/schemas/setting.schema';
 import { SettingService } from '@/setting/services/setting.service';
 
-import OpenAI from 'openai';
-import { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions';
 import { CHATGPT_HELPER_NAME } from './settings';
+
+type ChatGptOptions = Omit<
+  ChatCompletionCreateParamsBase,
+  'messages' | 'model'
+>;
 
 @Injectable()
 export default class ChatGptLlmHelper
@@ -60,38 +66,117 @@ export default class ChatGptLlmHelper
   }
 
   /**
-   * Generates a response using LLM
+   * Merge Provided options with the settings options
+   *
+   * @param options Caller function's options
+   * @returns ChatGpt Options
+   */
+  private async buildOptions(options: ChatGptOptions): Promise<ChatGptOptions> {
+    // Retrieve global settings
+    const {
+      model: _model,
+      token: _token,
+      ...globalSettings
+    } = await this.getSettings();
+
+    // Merge options: argument options take precedence over global settings
+    return {
+      ...{
+        ...globalSettings,
+        logit_bias: JSON.parse(globalSettings.logit_bias),
+        max_completion_tokens: parseInt(
+          globalSettings.max_completion_tokens.toString(),
+        ),
+      },
+      ...options,
+    };
+  }
+
+  /**
+   * Generates a response using OpenAI ChatGPT
    *
    * @param prompt - The input text from the user
    * @param model - The model to be used
    * @param systemPrompt - The input text from the system
-   * @returns {Promise<string>} - The generated response from the LLM
+   * @returns - The generated response from the OpenAI ChatGPT
    */
   async generateResponse(
     prompt: string,
     model: string,
     systemPrompt: string,
-    options: Omit<ChatCompletionCreateParamsBase, 'messages' | 'model'>,
+    options: ChatGptOptions,
   ): Promise<string> {
+    // Merge options: argument options take precedence over global settings
+    const opts = await this.buildOptions(options);
     const completion = await this.client.chat.completions.create({
       model,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: prompt },
       ],
-      ...options,
+      ...opts,
       stream: false,
+      response_format: {
+        type: 'text',
+      },
     });
 
     return completion.choices[0].message.content;
   }
 
   /**
-   * Formats messages to the Ollama required data structure
+   * Generates a response using OpenAI ChatGPT
+   *
+   * @param prompt - The input text from the user
+   * @param model - The model to be used
+   * @param systemPrompt - The input text from the system
+   * @param schema - The OpenAPI data schema
+   * @returns - The generated response from the OpenAI ChatGPT
+   */
+  async generateStructuredResponse<T>(
+    prompt: string,
+    model: string,
+    systemPrompt: string,
+    schema: LLM.ResponseSchema,
+    options: Omit<ChatCompletionCreateParamsBase, 'messages' | 'model'>,
+  ): Promise<T> {
+    const { model: globalModel } = await this.getSettings();
+    // Merge options: argument options take precedence over global settings
+    const opts = await this.buildOptions(options);
+    const completion = await this.client.chat.completions.create({
+      model: model || globalModel,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: prompt },
+      ],
+      ...opts,
+      stream: false,
+      response_format: {
+        json_schema: {
+          strict: true,
+          name: 'result',
+          schema: {
+            type: 'object',
+            properties: {
+              result: schema,
+            },
+            required: ['result'],
+            additionalProperties: false,
+          },
+        },
+        type: 'json_schema',
+      },
+    });
+
+    const { result } = JSON.parse(completion.choices[0].message.content);
+    return result as T;
+  }
+
+  /**
+   * Formats messages to the OpenAI ChatGPT required data structure
    *
    * @param messages - Message history to include
-   *
-   * @returns Ollama message array
+   * @returns OpenAI ChatGPT message array
    */
   private formatMessages(
     messages: AnyMessage[],

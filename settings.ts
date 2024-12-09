@@ -49,13 +49,13 @@ export default [
     type: SettingType.number,
     value: 0, // Default value, between -2.0 and 2.0
   },
-  {
-    label: 'function_call',
-    group: CHATGPT_HELPER_NAMESPACE,
-    subgroup: 'options',
-    type: SettingType.text,
-    value: 'none', // Default value ('none' or 'auto')
-  },
+  // {
+  //   label: 'function_call',
+  //   group: CHATGPT_HELPER_NAMESPACE,
+  //   subgroup: 'options',
+  //   type: SettingType.text,
+  //   value: 'none', // Default value ('none' or 'auto')
+  // },
   {
     label: 'logit_bias',
     group: CHATGPT_HELPER_NAMESPACE,
@@ -77,13 +77,13 @@ export default [
     type: SettingType.number,
     value: 1, // Default value
   },
-  {
-    label: 'parallel_tool_calls',
-    group: CHATGPT_HELPER_NAMESPACE,
-    subgroup: 'options',
-    type: SettingType.checkbox,
-    value: false, // Default value
-  },
+  // {
+  //   label: 'parallel_tool_calls',
+  //   group: CHATGPT_HELPER_NAMESPACE,
+  //   subgroup: 'options',
+  //   type: SettingType.checkbox,
+  //   value: false, // Default value
+  // },
   {
     label: 'presence_penalty',
     group: CHATGPT_HELPER_NAMESPACE,
@@ -91,13 +91,13 @@ export default [
     type: SettingType.number,
     value: 0, // Default value, between -2.0 and 2.0
   },
-  {
-    label: 'response_format',
-    group: CHATGPT_HELPER_NAMESPACE,
-    subgroup: 'options',
-    type: SettingType.text,
-    value: 'text', // Default value ('text' or 'json')
-  },
+  // {
+  //   label: 'response_format',
+  //   group: CHATGPT_HELPER_NAMESPACE,
+  //   subgroup: 'options',
+  //   type: SettingType.text,
+  //   value: 'text', // Default value ('text' or 'json')
+  // },
   {
     label: 'seed',
     group: CHATGPT_HELPER_NAMESPACE,
@@ -126,13 +126,13 @@ export default [
   //   type: SettingType.checkbox,
   //   value: false, // Default value
   // },
-  {
-    label: 'tool_choice',
-    group: CHATGPT_HELPER_NAMESPACE,
-    subgroup: 'options',
-    type: SettingType.text,
-    value: 'auto', // Default value ('none', 'auto', 'required')
-  },
+  // {
+  //   label: 'tool_choice',
+  //   group: CHATGPT_HELPER_NAMESPACE,
+  //   subgroup: 'options',
+  //   type: SettingType.text,
+  //   value: 'auto', // Default value ('none', 'auto', 'required')
+  // },
   {
     label: 'top_logprobs',
     group: CHATGPT_HELPER_NAMESPACE,
