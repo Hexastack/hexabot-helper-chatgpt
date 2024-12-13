@@ -10,7 +10,7 @@ The **Hexabot ChatGPT Helper Extension** is a utility class designed to facilita
 - **API Integration**: Seamlessly connect to OpenAI's ChatGPT API, enabling other extensions within Hexabot to access ChatGPT's capabilities.
 - **Configurable Settings**: Configure parameters like model type, temperature, maximum tokens, penalties, and more for customized behavior.
 - **Easy Integration**: Use as a helper utility to invoke the ChatGPT API from any other extension within Hexabot.
-- **Flexible Options**: Supports various options such as response format, stop sequences, log probabilities, and more to customize the behavior of ChatGPT.
+- **Flexible Options**: Supports various options such as response format, log probabilities and more to customize the behavior of ChatGPT.
 
 ## Installation
 
