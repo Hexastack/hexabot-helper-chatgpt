@@ -121,7 +121,13 @@ export default class ChatGptLlmHelper
       },
     });
 
-    return completion.choices[0].message.content;
+    const response = completion.choices[0].message.content;
+
+    if (!response) {
+      throw new Error('ChatGPT generateResponse method: no generated response');
+    }
+
+    return response;
   }
 
   /**
@@ -170,7 +176,15 @@ export default class ChatGptLlmHelper
       },
     });
 
-    const { result } = JSON.parse(completion.choices[0].message.content);
+    const response = completion.choices[0].message.content;
+
+    if (!response) {
+      throw new Error(
+        'ChatGPT generateStructuredResponse method: no generated response',
+      );
+    }
+
+    const { result } = JSON.parse(response);
     return result as T;
   }
 
@@ -226,6 +240,14 @@ export default class ChatGptLlmHelper
       stream: false,
     });
 
-    return completion.choices[0].message.content;
+    const response = completion.choices[0].message.content;
+
+    if (!response) {
+      throw new Error(
+        'ChatGPT generateChatCompletion method: no generated response',
+      );
+    }
+
+    return response;
   }
 }
