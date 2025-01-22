@@ -7,7 +7,7 @@
     "release:minor": "npm version minor && git push origin main --tags"
   },
   "dependencies": {
-    "openai": "^4.54.0"
+    "openai": "^4.79.4"
   },
   "author": "Hexastack",
   "license": "AGPL-3.0-only"
