@@ -51,7 +51,7 @@ You can use the helper to generate responses from the model based on user input:
 const response = await chatGptHelper.generateResponse(prompt, model, systemPrompt, options);
 console.log(response);
 ```
-#### Example 
+##### Example 
 ```typescript
 const response = await chatGptHelper.generateResponse(
   'Where is Paris located?',
