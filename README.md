@@ -92,7 +92,7 @@ console.log(response);
 
 ##### Example 
 ```typescript
-const response = await ollamaHelper.generateResponse(
+const response = await chatGptHelper.generateResponse(
   'Where is Paris located?',
   'gpt-4o-mini',
   'You are a tourist assistant',
