@@ -9,7 +9,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import OpenAI from 'openai';
-import { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions';
+import { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions/completions';
 
 import { AnyMessage } from '@/chat/schemas/types/message';
 import { HelperService } from '@/helper/helper.service';
