@@ -83,6 +83,15 @@ export default class ChatGptLlmHelper
     return {
       ...{
         ...globalSettings,
+        seed:
+          typeof options.seed === 'number' && options.seed >= 0
+            ? options.seed
+            : null,
+        stop: !!options.stop ? options.stop : null,
+        top_logprobs:
+          typeof options.top_logprobs === 'number' && options.top_logprobs >= 0
+            ? options.top_logprobs
+            : null,
         logit_bias: JSON.parse(globalSettings.logit_bias),
         max_completion_tokens: parseInt(
           globalSettings.max_completion_tokens.toString(),
