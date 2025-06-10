@@ -165,8 +165,8 @@ export default class ChatGptLlmHelper
         { role: 'user', content: prompt },
       ],
       ...opts,
-      // Force temperature to zero to be deterministic
-      temperature: 0,
+      // Temperature should ideally be zero to be deterministic
+      temperature: opts.temperature || 0,
       stream: false,
       response_format: {
         json_schema: {
