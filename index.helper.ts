@@ -89,7 +89,7 @@ export default class ChatGptLlmHelper
             : null,
         stop: !!options.stop ? options.stop : null,
         top_logprobs:
-          typeof options.top_logprobs === 'number' && options.top_logprobs >= 0
+          options.logprobs && typeof options.top_logprobs === 'number' && options.top_logprobs >= 0
             ? options.top_logprobs
             : null,
         logit_bias: JSON.parse(globalSettings.logit_bias),
