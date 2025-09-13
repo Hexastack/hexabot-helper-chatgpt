@@ -113,7 +113,7 @@ export default class ChatGptLlmHelper
     prompt: string,
     model: string,
     systemPrompt: string,
-    options: ChatGptOptions,
+    options: ChatGptOptions = {},
   ): Promise<string> {
     // Merge options: argument options take precedence over global settings
     const opts = await this.buildOptions(options);
@@ -153,7 +153,7 @@ export default class ChatGptLlmHelper
     model: string,
     systemPrompt: string,
     schema: LLM.ResponseSchema,
-    options: ChatGptOptions,
+    options: ChatGptOptions = {},
   ): Promise<T> {
     const { model: globalModel } = await this.getSettings();
     // Merge options: argument options take precedence over global settings
