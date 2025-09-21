@@ -95,9 +95,11 @@ export default class ChatGptLlmHelper
         opts.top_logprobs >= 0
           ? opts.top_logprobs
           : undefined,
-      logit_bias: opts.logit_bias
-        ? JSON.parse(JSON.stringify(opts.logit_bias))
-        : undefined,
+      logit_bias: !opts.logit_bias
+        ? undefined
+        : typeof opts.logit_bias === 'string'
+          ? JSON.parse(opts.logit_bias)
+          : opts.logit_bias,
       max_completion_tokens: parseInt(
         (opts.max_completion_tokens || 0).toString(),
       ),
