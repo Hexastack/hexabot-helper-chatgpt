@@ -80,24 +80,27 @@ export default class ChatGptLlmHelper
     } = await this.getSettings();
 
     // Merge options: argument options take precedence over global settings
-    return {
-      ...{
-        ...globalSettings,
-        seed:
-          typeof options.seed === 'number' && options.seed >= 0
-            ? options.seed
-            : null,
-        stop: !!options.stop ? options.stop : null,
-        top_logprobs:
-          options.logprobs && typeof options.top_logprobs === 'number' && options.top_logprobs >= 0
-            ? options.top_logprobs
-            : undefined,
-        logit_bias: JSON.parse(globalSettings.logit_bias),
-        max_completion_tokens: parseInt(
-          globalSettings.max_completion_tokens.toString(),
-        ),
-      },
+    const opts = {
+      ...globalSettings,
       ...options,
+    };
+
+    return {
+      ...opts,
+      seed: typeof opts.seed === 'number' && opts.seed >= 0 ? opts.seed : null,
+      stop: !!opts.stop ? opts.stop : null,
+      top_logprobs:
+        opts.logprobs &&
+        typeof opts.top_logprobs === 'number' &&
+        opts.top_logprobs >= 0
+          ? opts.top_logprobs
+          : undefined,
+      logit_bias: opts.logit_bias
+        ? JSON.parse(JSON.stringify(opts.logit_bias))
+        : undefined,
+      max_completion_tokens: parseInt(
+        (opts.max_completion_tokens || 0).toString(),
+      ),
     };
   }
 
@@ -233,8 +236,10 @@ export default class ChatGptLlmHelper
     model: string,
     systemPrompt: string,
     history: AnyMessage[] = [],
-    options: Omit<ChatCompletionCreateParamsBase, 'messages' | 'model'>,
+    options: ChatGptOptions,
   ) {
+    // Merge options: argument options take precedence over global settings
+    const opts = await this.buildOptions(options);
     const completion = await this.client.chat.completions.create({
       model,
       messages: [
@@ -245,7 +250,7 @@ export default class ChatGptLlmHelper
         ...this.formatMessages(history),
         { role: 'user', content: prompt },
       ],
-      ...options,
+      ...opts,
       stream: false,
     });
 
